@@ -94,10 +94,23 @@ const match = () => {
         })
 }
 
+let delay = 1200
+let delay2 = 500
 let firstGuess = ''
 let secondGuess = ''
 let previousTarget = null
 let count = 0
+
+const resetGuesses = () => {
+    firstGuess = ''
+    secondGuess = ''
+    count = 0
+
+    let selected = document.querySelectorAll('.selected')
+    selected.forEach(card => {
+        card.classList.remove('selected')
+    })
+}
 
 //Add event listener to grid
 grid.addEventListener('click', function(event){
@@ -123,8 +136,11 @@ grid.addEventListener('click', function(event){
         if (firstGuess != '' && secondGuess != ''){
             //and the first guess matches the second match
                 if (firstGuess === secondGuess){
-                    match()
-                } 
+                    setTimeout (match, delay)
+                    setTimeout (resetGuesses, delay)
+                } else{
+                    setTimeout (resetGuesses, delay2)
+                }
         }        
         //Set previous target to clicked
         previousTarget = clicked;
