@@ -69,6 +69,10 @@ let gameGrid = cardsArray.concat(cardsArray)
 //Randomize game grid every time
 gameGrid.sort(() => 0.5 - Math.random())
 
+let firstGuess = ''
+let secondGuess = ''
+let count = 0
+let previousTarget = null
 
 //Grab the div with an id of root
 const game = document.getElementById('game')
@@ -97,17 +101,16 @@ gameGrid.forEach(item => {
 
     //Create back of card, which contains
     const back = document.createElement('div')
-    front.classList.add('back')
+    back.classList.add('back')
     back.style.backgroundImage = `url(${item.img})`
 
     //Apply the background image of the div to the cardsArray image
-    card.style.backgroundImage = `url(${item.img})`
+    back.style.backgroundImage = `url(${item.img})`
 
     //Append the div to the grid section
     grid.appendChild(card)
     card.appendChild(front)
     card.appendChild(back)
-
 })
 
 //Add match CSS
@@ -118,19 +121,12 @@ const match = () => {
     })
 }
 
-let delay = 1200
-let delay2 = 500
-let firstGuess = ''
-let secondGuess = ''
-let previousTarget = null
-let count = 0
-
 const resetGuesses = () => {
-    firstGuess = ''
-    secondGuess = ''
-    count = 0
+    firstGuess = '';
+    secondGuess = '';
+    count = 0;
 
-    let selected = document.querySelectorAll('.selected')
+    var selected = document.querySelectorAll('.selected')
     selected.forEach(card => {
         card.classList.remove('selected')
     })
@@ -151,30 +147,26 @@ grid.addEventListener('click', function (event) {
         count++;
         if (count === 1) {
             //Assign fist guess
-            firstGuess = clicked.dataset.name
-            clicked.classList.add('selected')
+            firstGuess = clicked.parentNode.dataset.name
+            console.log(firstGuess)
+            clicked.parentNode.classList.add('selected')
         } else {
             //Assign second guess
-            secondGuess = clicked.dataset.name
-            clicked.classList.add('selected')
+            secondGuess = clicked.parentNode.dataset.name
+            console.log(secondGuess)
+            clicked.parentNode.classList.add('selected')
         }
         //If both guesses are not empty
         if (firstGuess != '' && secondGuess != '') {
             //and the first guess matches the second match
             if (firstGuess === secondGuess) {
-                setTimeout(match, delay)
-                setTimeout(resetGuesses, delay)
+                setTimeout(match, 1600)
+                setTimeout(resetGuesses, 1600)
             } else {
-                setTimeout(resetGuesses, delay2)
+                setTimeout(resetGuesses, 1000)
             }
         }
         //Set previous target to clicked
         previousTarget = clicked;
     }
 })
-
-
-
-
-
-
