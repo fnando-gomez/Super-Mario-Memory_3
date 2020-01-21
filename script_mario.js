@@ -1,7 +1,7 @@
 
 //Card data
 
-const cardsArrays = [
+const cardsArray = [
 
     {name:'shell',
     img:'img/blueshell.png',
@@ -52,6 +52,12 @@ const cardsArrays = [
     },
 ]
 
+let gameGrid = cardsArray.concat(cardsArray)
+
+//Randomize game grid every time
+gameGrid.sort(() => 0.5 - Math.random())
+
+
 //Grab the div with an id of root
 const game = document.getElementById('game')
 
@@ -63,7 +69,7 @@ grid.setAttribute('class', 'grid')
 game.appendChild(grid)
 
 //For each item in the cardArrays array
-cardsArrays.forEach(item => {
+gameGrid.forEach(item => {
     //Create a div
     const card = document.createElement('div')
 
@@ -79,3 +85,16 @@ cardsArrays.forEach(item => {
     //Append the div to the grid section
     grid. appendChild(card)
 })
+
+//Add event listener to grid
+grid.addEventListener('click', function(event){
+    let clicked = event.target // The event target is our clicked item
+
+    //Do not allow the grid section itself to be selected; only select divs inside the grid
+    if(clicked.nodeName === 'SECTION'){
+        return
+    }
+
+    clicked.classList.add('selected') // Add selected class
+})
+
