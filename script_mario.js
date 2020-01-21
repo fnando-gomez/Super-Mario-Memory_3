@@ -72,29 +72,67 @@ game.appendChild(grid)
 gameGrid.forEach(item => {
     //Create a div
     const card = document.createElement('div')
-
+    
     //Apply a card class to that div
     card.classList.add('card')
-
+    
     // Set the data-name attribute of the div to the cardsArray name
     card.dataset.name = item.name
-
+    
     //Apply the background image of the div to the cardsArray image
     card.style.backgroundImage = `url(${item.img})`
-
+    
     //Append the div to the grid section
     grid. appendChild(card)
 })
 
+//Add match CSS
+const match = () => {
+    let selected = document.querySelectorAll('.selected')
+        selected.forEach(card => {
+            card.classList.add('match')
+        })
+}
+
+let firstGuess = ''
+let secondGuess = ''
+let previousTarget = null
+let count = 0
+
 //Add event listener to grid
 grid.addEventListener('click', function(event){
     let clicked = event.target // The event target is our clicked item
-
+    
     //Do not allow the grid section itself to be selected; only select divs inside the grid
-    if(clicked.nodeName === 'SECTION'){
+    if(clicked.nodeName === 'SECTION' || clicked === previousTarget){
         return
     }
-
-    clicked.classList.add('selected') // Add selected class
+    
+    if (count < 2){
+        count++;
+        if(count ===1){
+        //Assign fist guess
+        firstGuess = clicked.dataset.name
+        clicked.classList.add('selected')
+        } else{
+            //Assign second guess
+            secondGuess = clicked.dataset.name
+            clicked.classList.add('selected')
+        }
+        //If both guesses are not empty
+        if (firstGuess != '' && secondGuess != ''){
+            //and the first guess matches the second match
+                if (firstGuess === secondGuess){
+                    match()
+                } 
+        }        
+        //Set previous target to clicked
+        previousTarget = clicked;
+    } 
 })
+
+
+
+
+
 
